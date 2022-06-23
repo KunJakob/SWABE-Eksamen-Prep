@@ -1,12 +1,8 @@
-import { DI } from "./index";
-import { RequestContext } from "@mikro-orm/core";
-import express, { ErrorRequestHandler } from "express";
-import UserController from "./resolvers/UserResolvers";
+import express from "express";
 import http from "http";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { DocumentNode } from "graphql";
-import { merge } from "lodash";
 
 async function startApolloServer(typeDefs: DocumentNode, resolvers: any) {
   const app = express();

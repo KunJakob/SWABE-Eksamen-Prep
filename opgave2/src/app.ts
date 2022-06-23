@@ -6,7 +6,6 @@ import http from "http";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { DocumentNode } from "graphql";
-import { merge } from "lodash";
 
 async function startApolloServer(typeDefs: DocumentNode, resolvers: any) {
   const app = express();
@@ -16,10 +15,15 @@ async function startApolloServer(typeDefs: DocumentNode, resolvers: any) {
     resolvers,
     csrfPrevention: true,
     cache: "bounded",
+    context: ({req}) => ({
+      auth: req.headers['authorization'] //example, not used
+    }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
+  
   await server.start();
   server.applyMiddleware({ app });
+
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: 4000 }, resolve)
   );

@@ -53,16 +53,23 @@ public class WeatherClient
         Console.WriteLine($"{DateTime.Now:hh:mm:ss.ffff} {message}");
     }
     
-    public async Task<string> GetWeather()
+    public async Task<string> GetWeatherWithRetry()
+    {
+        return await _retryPolicy.ExecuteAsync(async () =>
+        {
+            var response = await _httpClient.GetAsync("https://localhost:12345/GetWeatherForecast");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
+        });
+    }
+
+    public async Task<string> GetWeatherWithCircuitBreaker()
     {
         return await _circuitBreakerPolicy.Execute(async () =>
         {
-            return await _retryPolicy.ExecuteAsync(async () =>
-            {
-                var response = await _httpClient.GetAsync("https://localhost:12345/GetWeatherForecast");
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-            });
+            var response = await _httpClient.GetAsync("https://localhost:12345/GetWeatherForecast");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
         });
     }
 }

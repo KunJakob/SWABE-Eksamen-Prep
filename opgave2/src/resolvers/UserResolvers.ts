@@ -1,14 +1,11 @@
 import { UserModel } from "./../../../opgave1/src/models/UserModel";
 import { createUser } from "../services/UserService";
-import { Router } from "express";
 import {} from "graphql-tools";
 import {
-  deleteUser,
   getAllUsers,
   updateUser,
   findOneUser,
 } from "../services/UserService";
-import { GraphQLResolveInfo } from "graphql";
 
 export default {
   Query: {

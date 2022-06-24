@@ -1,7 +1,6 @@
 import { simpleWebServer } from "./simple-web-server";
 import { UserModel } from "./models/UserModel";
 import http from "http";
-import { Express } from "express";
 import { EntityManager, EntityRepository, MikroORM } from "@mikro-orm/core";
 import { BetterSqliteDriver } from "@mikro-orm/better-sqlite";
 import server from "./app";
